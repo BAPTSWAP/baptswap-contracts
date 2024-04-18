@@ -260,33 +260,30 @@ module baptswap::swap {
     ): (u128, u128) {
         if (reward_x == 0 && reward_y == 0) return (last_magnified_dividends_per_share_x, last_magnified_dividends_per_share_y);
 
-        let x_token_per_share_u256 = u256::from_u64(0u64);
-        let y_token_per_share_u256 = u256::from_u64(0u64);
-
-        if (reward_x > 0) {
+        let x_token_per_share_u256 = if (reward_x > 0) {
             // acc_token_per_share = acc_token_per_share + (reward * precision_factor) / total_stake;
-            x_token_per_share_u256 = u256::add(
+            u256::add(
                 u256::from_u128(last_magnified_dividends_per_share_x),
                 u256::div(
                     u256::mul(u256::from_u64(reward_x), u256::from_u128(precision_factor)),
                     u256::from_u64(total_staked_token)
                 )
-            );
+            )
         } else {
-            x_token_per_share_u256 = u256::from_u128(last_magnified_dividends_per_share_x);
+            u256::from_u128(last_magnified_dividends_per_share_x)
         };
 
-        if (reward_y > 0) {
+        let y_token_per_share_u256 = if (reward_y > 0) {
             // acc_token_per_share = acc_token_per_share + (reward * precision_factor) / total_stake;
-            y_token_per_share_u256 = u256::add(
+            u256::add(
                 u256::from_u128(last_magnified_dividends_per_share_y),
                 u256::div(
                     u256::mul(u256::from_u64(reward_y), u256::from_u128(precision_factor)),
                     u256::from_u64(total_staked_token)
                 )
-            );
+            )
         } else {
-            y_token_per_share_u256 = u256::from_u128(last_magnified_dividends_per_share_y);
+            u256::from_u128(last_magnified_dividends_per_share_y)
         };
 
         (u256::as_u128(x_token_per_share_u256), u256::as_u128(y_token_per_share_u256))

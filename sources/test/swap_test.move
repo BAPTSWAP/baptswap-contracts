@@ -24,7 +24,7 @@ module baptswap::swap_test {
         account::create_account_for_test(signer::address_of(dev));
         account::create_account_for_test(signer::address_of(admin));
         account::create_account_for_test(signer::address_of(treasury));
-        resource_account::create_resource_account(dev, b"datswap", x"");
+        resource_account::create_resource_account(dev, b"baptswap-v1", x"");
         initialize(resource_account);
         swap::set_fee_to(admin, signer::address_of(treasury))
     }
